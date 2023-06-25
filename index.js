@@ -3,10 +3,25 @@ const gameContainer = document.getElementById("game-container");
 //create  a game board array ,since a gameBoard is only singular we are going to create one single instance of it with module pattern
 
 const gameBoard = (function () {
+  let numberOfTurns = 1;
   let gameBoardArray = [];
   let currentPlayerTurn;
+
+  let gamePlayers = {
+    X: null,
+    O: null,
+  };
+
+  //function thhat adds players to the game
+
+  function addPlayers(player1, player2) {
+    gamePlayers[player1.symbol] = player1.name;
+    gamePlayers[player2.symbol] = player2.name;
+  }
+
   //function that resets the gameBoard
   function resetGameBoard() {
+    numberOfTurns = 1;
     gameBoardArray = [];
     currentPlayerTurn = "X";
     for (let i = 0; i < 9; i++) {
@@ -86,39 +101,39 @@ const gameBoard = (function () {
     if (gameBoardArray[clickedSquareIndex].clicked) {
       return;
     }
+    //fill the square object when the corresponding dom squareElement is clicked
     gameBoardArray[clickedSquareIndex].symbol = currentPlayerTurn;
     gameBoardArray[clickedSquareIndex].clicked = true;
 
     if (winningSquares()) {
-      console.log("the winner is " + currentPlayerTurn);
+      console.log("the winner is " + gamePlayers[currentPlayerTurn]);
+    } else if (winningSquares() === null && numberOfTurns === 9) {
+      console.log("the game is a draw");
     }
-
+    numberOfTurns++;
     updateCurrentPlayerTurn();
     renderGameBoard();
   }
 
   return {
-    gameBoardArray,
-    updateCurrentPlayerTurn,
     renderGameBoard,
     resetGameBoard,
+    addPlayers,
   };
 })();
 
 //create the factory function that creates players (since we are going to have two players we created a factory)
 
-const playerFactory = (symbol, isMyTurn) => {
+const playerFactory = (symbol, name) => {
   //create a function that updates if it's the player turn or no
 
-  function updateTurn() {
-    this.isMyTurn ? (this.isMyTurn = false) : (this.isMyTurn = true);
-  }
-
-  return Object.assign({}, { symbol }, { isMyTurn }, { updateTurn });
+  return { symbol, name };
 };
 
-let firstPLayer = playerFactory("X", true);
-let secondPlayer = playerFactory("O", false);
+let firstPLayer = playerFactory("X", "Dhia");
+let secondPlayer = playerFactory("O", "Taybou");
+
+gameBoard.addPlayers(firstPLayer, secondPlayer);
 
 console.log(gameBoard.gameBoardArray);
 
