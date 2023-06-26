@@ -9,7 +9,24 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="game-container"></div>
-    <button id="reset-game">Reset the game</button>
+    <div id="app-container">
+      <div id="game-container">
+        <div id="board-container"></div>
+        <button id="reset-game">Reset the game</button>
+      </div>
+
+      <div id="add-player-form-container">
+        <p>PLeas enter the name of the players before starting the game</p>
+        <form action="">
+          <label for="player-1">Input player 1 name that uses (X)</label>
+          <input type="text" id="player-1" name="player-1" />
+
+          <label for="player-2">Input player 2 name that uses (O)</label>
+          <input type="text" id="player-2" name="player-2" />
+
+          <button id="submit-names" type="submit">Confirm player names</button>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
